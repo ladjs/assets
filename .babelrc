@@ -1,0 +1,9 @@
+{
+  "presets": [ "env" ],
+  "plugins": [
+    "lodash",
+    "transform-runtime",
+    "transform-object-rest-spread"
+  ],
+  "sourceMaps": "inline"
+}
