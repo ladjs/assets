@@ -1,0 +1,20 @@
+// <label class="d-block">
+//   <input required="required" data-toggle="custom-file" data-target="#company-logo" type="file" name="company_logo" accept="image/*" class="custom-file-input">
+//   <span id="company-logo" class="custom-file-control custom-file-name" data-btn="{{ t('Select File') }}" data-content="{{ t('Upload company logo...') }}"></span>
+// </label>
+.custom-file-input {
+  &:after {
+    content: attr(data-content) !important;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    padding: 0.5rem 1rem;
+  }
+
+  &:before {
+    content: attr(data-btn) !important;
+  }
+}

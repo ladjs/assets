@@ -1,0 +1,12 @@
+// when you have images loaded by jquery-lazy
+// you should not specify a `src` attribute
+// otherwise the image appears broken on the page
+img:not([src]) {
+  visibility: hidden;
+}
+
+// used in emails for rendering font-awesome icons
+img.fa-img {
+  display: inline-block !important;
+  vertical-align: top !important;
+}
