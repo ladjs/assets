@@ -10,9 +10,8 @@ const changeHashOnScroll = () => {
     );
 
   const $navbarFixedTop = $('.navbar.fixed-top');
-  const extraHeight = $navbarFixedTop.length
-    ? $navbarFixedTop.outerHeight()
-    : 0;
+  const extraHeight =
+    $navbarFixedTop.length === 0 ? 0 : $navbarFixedTop.outerHeight();
   const $target = window.location.hash === '' ? null : $(window.location.hash);
 
   $(':header[id]')

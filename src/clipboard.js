@@ -40,5 +40,6 @@ module.exports = () => {
   } else {
     $('[data-toggle-clipboard]').addClass('hidden');
   }
+
   return Clipboard;
 };

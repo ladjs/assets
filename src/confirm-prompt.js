@@ -5,7 +5,7 @@ const swal = require('sweetalert2');
 // `data-toggle="confirm-prompt"` or `.confirm-prompt` class
 // `data-html="Please confirm if you wish to continue"` html/text of message
 // `data-title="Are you sure?"` title of swal message
-const confirmPrompt = ev => {
+const confirmPrompt = async ev => {
   // Get the form or button
   const $el = $(ev.currentTarget);
 
@@ -21,20 +21,19 @@ const confirmPrompt = ev => {
   const confirmed = $el.data('confirmed');
   if (!confirmed) {
     ev.preventDefault();
-    swal({
+    const result = await swal({
       title,
       html,
       type: 'question',
       showCancelButton: true
-    }).then(result => {
-      if (!result.value) return;
-      // Set confirmed state to true
-      $el.data('confirmed', true);
-      // Trigger click again
-      $el.trigger(ev.type);
-      // Reset confirmation after click
-      $el.data('confirmed', false);
     });
+    if (!result.value) return;
+    // Set confirmed state to true
+    $el.data('confirmed', true);
+    // Trigger click again
+    $el.trigger(ev.type);
+    // Reset confirmation after click
+    $el.data('confirmed', false);
   }
 };
 

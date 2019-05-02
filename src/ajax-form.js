@@ -40,6 +40,7 @@ const ajaxForm = async ev => {
     headers: defaultHeaders
   });
 
+  // TODO: use stripe-checkout lib
   // If the form requires Stripe checkout token
   // then return early and open Stripe checkout
   if ($form.hasClass('stripe-checkout')) {
@@ -181,10 +182,9 @@ const ajaxForm = async ev => {
             html: res.body.message
           };
         // Show message
-        swal(config).then(() => {
-          // Redirect
-          window.location = res.body.redirectTo;
-        });
+        await swal(config);
+        // Redirect
+        window.location = res.body.redirectTo;
       }
     } else if (_.isObject(res.body.swal)) {
       // Hide the spinner
@@ -211,12 +211,12 @@ const ajaxForm = async ev => {
       if (_.isBoolean(res.body.reloadPage) && res.body.reloadPage)
         window.location.reload();
     }
-  } catch (err) {
+  } catch (error) {
     // Hide the spinner
     spinner.hide();
 
     // Show error message
-    swal(window._types.error, err.message, 'error');
+    swal(window._types.error, error.message, 'error');
   } finally {
     // Re-enable form buttons
     $btns.prop('disabled', false).removeClass('disabled');

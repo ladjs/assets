@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/no-unassigned-import
-// require('babel-polyfill');
-
 const clipboard = require('./clipboard');
 const returnTo = require('./return-to');
 const facebookHashFix = require('./facebook-hash-fix');

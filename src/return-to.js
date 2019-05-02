@@ -1,4 +1,5 @@
-const url = require('url');
+const URL = require('url');
+const querystring = require('querystring');
 const _ = require('lodash');
 const s = require('underscore.string');
 
@@ -23,9 +24,8 @@ const s = require('underscore.string');
 // <https://nodejs.org/api/url.html#url_url_format_urlobject>
 //
 module.exports = () => {
-  const obj = url.parse(window.location.href, {
-    parseQueryString: true
-  });
+  const obj = new URL(window.location.href);
+  obj.query = querystring.parse(obj.query);
   if (
     !_.isObject(obj.query) ||
     !_.isString(obj.query.hash) ||
@@ -35,5 +35,5 @@ module.exports = () => {
   obj.hash = obj.query.hash;
   delete obj.query.hash;
   obj.search = undefined;
-  window.location = url.format(obj);
+  window.location = obj.toString();
 };

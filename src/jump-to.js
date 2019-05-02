@@ -20,6 +20,7 @@ const jumpTo = target => {
   if ($('.navbar.fixed-top').length > 0) {
     offsetTop -= $('.navbar.fixed-top').outerHeight();
   }
+
   window.scrollTo(0, offsetTop);
 };
 
