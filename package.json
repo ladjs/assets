@@ -1,7 +1,7 @@
 {
   "name": "@ladjs/assets",
   "description": "Assets for Lad",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com/)",
   "bugs": {
     "url": "https://github.com/ladjs/assets/issues",
@@ -27,6 +27,8 @@
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
     "cross-env": "^5.2.0",
     "eslint": "^6.2.2",
     "eslint-config-xo-lass": "^1.0.3",
