@@ -115,7 +115,6 @@
   "scripts": {
     "build": "babel src --out-dir lib",
     "lint": "xo && eslint lib && remark . -qfo",
-    "precommit": "lint-staged && npm test",
     "test": "npm run build && npm run lint",
     "watch": "babel src --watch --out-dir lib"
   },
