@@ -111,9 +111,7 @@ const ajaxForm = async ev => {
 
   try {
     // Set default headers
-    const headers = {
-      ...defaultHeaders
-    };
+    const headers = { ...defaultHeaders };
 
     // If the form contains a file input, then we need to use FormData
     // otherwise we can just use querystring parsing to assemble body
@@ -211,12 +209,12 @@ const ajaxForm = async ev => {
       if (_.isBoolean(res.body.reloadPage) && res.body.reloadPage)
         window.location.reload();
     }
-  } catch (error) {
+  } catch (err) {
     // Hide the spinner
     spinner.hide();
 
     // Show error message
-    swal(window._types.error, error.message, 'error');
+    swal(window._types.error, err.message, 'error');
   } finally {
     // Re-enable form buttons
     $btns.prop('disabled', false).removeClass('disabled');

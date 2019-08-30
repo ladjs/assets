@@ -1,11 +1,9 @@
 const _ = require('lodash');
 
-/* eslint-disable max-len */
 // <label class="d-block">
 //   <input required="required" data-toggle="custom-file" data-target="#company-logo" type="file" name="company_logo" accept="image/*" class="custom-file-input">
 //   <span id="company-logo" class="custom-file-control custom-file-name" data-btn="{{ t('Select File') }}" data-content="{{ t('Upload company logo...') }}"></span>
 // </label>
-/* eslint-enable max-len */
 const customFileInput = function() {
   const $input = $(this);
   const target = $input.data('target');

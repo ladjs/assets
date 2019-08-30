@@ -1,9 +1,11 @@
 {
-  "presets": [ "env" ],
-  "plugins": [
-    "lodash",
-    "transform-runtime",
-    "transform-object-rest-spread"
-  ],
-  "sourceMaps": "inline"
+  "presets": [
+    [
+      "@babel/env", {
+        "targets": {
+          "node": "6.4.0",
+        }
+      }
+    ]
+  ]
 }
