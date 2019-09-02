@@ -1,4 +1,4 @@
-const swal = require('sweetalert2');
+const Swal = require('sweetalert2');
 const isSANB = require('is-string-and-not-blank');
 
 // Allow users to specify:
@@ -21,7 +21,7 @@ const confirmPrompt = async ev => {
   const confirmed = $el.data('confirmed');
   if (!confirmed) {
     ev.preventDefault();
-    const result = await swal({
+    const result = await Swal.fire({
       title,
       html,
       type: 'question',

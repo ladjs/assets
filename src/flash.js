@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const swal = require('sweetalert2');
+const Swal = require('sweetalert2');
 const isSANB = require('is-string-and-not-blank');
 
 module.exports = () => {
@@ -29,6 +29,6 @@ module.exports = () => {
       });
     });
 
-    if (steps.length > 0) swal.queue(steps);
+    if (steps.length > 0) Swal.queue(steps);
   }
 };

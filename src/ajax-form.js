@@ -1,7 +1,7 @@
 const qs = require('qs');
 const _ = require('lodash');
 const Frisbee = require('frisbee');
-const swal = require('sweetalert2');
+const Swal = require('sweetalert2');
 const isSANB = require('is-string-and-not-blank');
 
 const Spinner = require('./spinner');
@@ -154,7 +154,11 @@ const ajaxForm = async ev => {
       // Hide the spinner
       spinner.hide();
       // Show message
-      swal(window._types.error, 'Invalid response, please try again', 'error');
+      Swal.fire(
+        window._types.error,
+        'Invalid response, please try again',
+        'error'
+      );
     } else if (isSANB(res.body.redirectTo)) {
       if (
         (_.isBoolean(res.body.autoRedirect) && res.body.autoRedirect) ||
@@ -180,7 +184,7 @@ const ajaxForm = async ev => {
             html: res.body.message
           };
         // Show message
-        await swal(config);
+        await Swal.fire(config);
         // Redirect
         window.location = res.body.redirectTo;
       }
@@ -188,14 +192,14 @@ const ajaxForm = async ev => {
       // Hide the spinner
       spinner.hide();
       // Show message
-      swal(res.body.swal);
+      Swal.fire(res.body.swal);
       // Reset the form
       $form.get(0).reset();
     } else if (isSANB(res.body.message)) {
       // Hide the spinner
       spinner.hide();
       // Show message
-      swal(window._types.success, res.body.message, 'success');
+      Swal.fire(window._types.success, res.body.message, 'success');
       // Reset the form
       $form.get(0).reset();
       // Reload page
@@ -205,7 +209,11 @@ const ajaxForm = async ev => {
       // Hide the spinner
       spinner.hide();
       // Show message
-      swal(window._types.success, JSON.stringify(res.body, null, 2), 'success');
+      Swal.fire(
+        window._types.success,
+        JSON.stringify(res.body, null, 2),
+        'success'
+      );
       // Reset the form
       $form.get(0).reset();
     }
@@ -214,7 +222,7 @@ const ajaxForm = async ev => {
     spinner.hide();
 
     // Show error message
-    swal(window._types.error, err.message, 'error');
+    Swal.fire(window._types.error, err.message, 'error');
   } finally {
     // Re-enable form buttons
     $btns.prop('disabled', false).removeClass('disabled');
