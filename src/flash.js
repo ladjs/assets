@@ -1,6 +1,6 @@
 const _ = require('lodash');
-const s = require('underscore.string');
 const swal = require('sweetalert2');
+const isSANB = require('is-string-and-not-blank');
 
 module.exports = () => {
   if (_.isObject(window._messages) && !_.isEmpty(window._messages)) {
@@ -14,12 +14,12 @@ module.exports = () => {
         } else if (_.isString(message)) {
           steps.push({
             title:
-              _.isObject(window._types) && !s.isBlank(window._types[type])
+              _.isObject(window._types) && isSANB(window._types[type])
                 ? window._types[type]
                 : type,
             html: message,
             type:
-              _.isObject(window._types) && !s.isBlank(window._types[type])
+              _.isObject(window._types) && isSANB(window._types[type])
                 ? type
                 : null
           });

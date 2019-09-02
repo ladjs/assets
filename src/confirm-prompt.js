@@ -1,5 +1,5 @@
-const s = require('underscore.string');
 const swal = require('sweetalert2');
+const isSANB = require('is-string-and-not-blank');
 
 // Allow users to specify:
 // `data-toggle="confirm-prompt"` or `.confirm-prompt` class
@@ -10,10 +10,10 @@ const confirmPrompt = async ev => {
   const $el = $(ev.currentTarget);
 
   let title = $el.data('confirm-prompt-title');
-  if (s.isBlank(title)) title = window._confirmPromptTitle || 'Are you sure?';
+  if (!isSANB(title)) title = window._confirmPromptTitle || 'Are you sure?';
 
   let html = $el.data('confirm-prompt-html');
-  if (s.isBlank(html))
+  if (!isSANB(html))
     html =
       window._confirmPromptHTML || 'Please confirm if you wish to continue.';
 

@@ -1,7 +1,7 @@
-const s = require('underscore.string');
+const isSANB = require('is-string-and-not-blank');
 
 const jumpTo = target => {
-  if (s.isBlank(target) || target === '#') return;
+  if (!isSANB(target) || target === '#') return;
 
   const $target = $(target);
   if ($target.length === 0) return;

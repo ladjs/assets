@@ -1,7 +1,5 @@
-const URL = require('url');
-const querystring = require('querystring');
-const _ = require('lodash');
-const s = require('underscore.string');
+const URLParse = require('url-parse');
+const qs = require('qs');
 
 //
 // Since we support links containing `?return_to=/some/path`
@@ -24,16 +22,19 @@ const s = require('underscore.string');
 // <https://nodejs.org/api/url.html#url_url_format_urlobject>
 //
 module.exports = () => {
-  const obj = new URL(window.location.href);
-  obj.query = querystring.parse(obj.query);
-  if (
-    !_.isObject(obj.query) ||
-    !_.isString(obj.query.hash) ||
-    s.isBlank(obj.query.hash)
-  )
-    return;
-  obj.hash = obj.query.hash;
-  delete obj.query.hash;
-  obj.search = undefined;
-  window.location = obj.toString();
+  const url = new URLParse(window.location.href, query =>
+    qs.parse(query, { ignoreQueryPrefix: true })
+  );
+
+  if (url.query.hash) {
+    url.set('hash', `#${url.query.hash}`);
+    delete url.query.hash;
+  }
+
+  history.replaceState(
+    null,
+    url.toString(query =>
+      qs.stringify(query, { addQueryPrefix: true, format: 'RFC1738' })
+    )
+  );
 };

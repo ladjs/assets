@@ -1,8 +1,8 @@
 const qs = require('qs');
 const _ = require('lodash');
 const Frisbee = require('frisbee');
-const s = require('underscore.string');
 const swal = require('sweetalert2');
+const isSANB = require('is-string-and-not-blank');
 
 const Spinner = require('./spinner');
 
@@ -155,10 +155,10 @@ const ajaxForm = async ev => {
       spinner.hide();
       // Show message
       swal(window._types.error, 'Invalid response, please try again', 'error');
-    } else if (!s.isBlank(res.body.redirectTo)) {
+    } else if (isSANB(res.body.redirectTo)) {
       if (
         (_.isBoolean(res.body.autoRedirect) && res.body.autoRedirect) ||
-        (s.isBlank(res.body.message) && !_.isObject(res.body.swal))
+        (!isSANB(res.body.message) && !_.isObject(res.body.swal))
       ) {
         // Reset the form
         $form.get(0).reset();
@@ -173,9 +173,9 @@ const ajaxForm = async ev => {
         if (_.isObject(res.body.swal)) config = res.body.swal;
         else
           config = {
-            title: s.isBlank(res.body.title)
-              ? window._types.success
-              : res.body.title,
+            title: isSANB(res.body.title)
+              ? res.body.title
+              : window._types.success,
             type: 'success',
             html: res.body.message
           };
@@ -191,14 +191,7 @@ const ajaxForm = async ev => {
       swal(res.body.swal);
       // Reset the form
       $form.get(0).reset();
-    } else if (s.isBlank(res.body.message)) {
-      // Hide the spinner
-      spinner.hide();
-      // Show message
-      swal(window._types.success, JSON.stringify(res.body, null, 2), 'success');
-      // Reset the form
-      $form.get(0).reset();
-    } else {
+    } else if (isSANB(res.body.message)) {
       // Hide the spinner
       spinner.hide();
       // Show message
@@ -208,6 +201,13 @@ const ajaxForm = async ev => {
       // Reload page
       if (_.isBoolean(res.body.reloadPage) && res.body.reloadPage)
         window.location.reload();
+    } else {
+      // Hide the spinner
+      spinner.hide();
+      // Show message
+      swal(window._types.success, JSON.stringify(res.body, null, 2), 'success');
+      // Reset the form
+      $form.get(0).reset();
     }
   } catch (err) {
     // Hide the spinner
