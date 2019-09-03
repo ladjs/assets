@@ -213,6 +213,8 @@ const ajaxForm = async ev => {
         // Show message
         Swal.fire(window._types.success, res.body.message, 'success');
       }
+    } else if (_.isBoolean(res.body.reloadPage) && res.body.reloadPage) {
+      window.location.reload();
     } else {
       // Hide the spinner
       spinner.hide();
