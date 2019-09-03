@@ -165,14 +165,16 @@ const ajaxForm = async ev => {
         (!isSANB(res.body.message) && !_.isObject(res.body.swal))
       ) {
         // Reset the form
-        $form.get(0).reset();
+        if (_.isBoolean(res.body.resetForm) && res.body.resetForm)
+          $form.get(0).reset();
         // Redirect
         window.location = res.body.redirectTo;
       } else {
         // Hide the spinner
         spinner.hide();
         // Reset the form
-        $form.get(0).reset();
+        if (_.isBoolean(res.body.resetForm) && res.body.resetForm)
+          $form.get(0).reset();
         let config = {};
         if (_.isObject(res.body.swal)) config = res.body.swal;
         else
@@ -194,17 +196,19 @@ const ajaxForm = async ev => {
       // Show message
       Swal.fire(res.body.swal);
       // Reset the form
-      $form.get(0).reset();
+      if (_.isBoolean(res.body.resetForm) && res.body.resetForm)
+        $form.get(0).reset();
     } else if (isSANB(res.body.message)) {
       // Hide the spinner
       spinner.hide();
       // Show message
       Swal.fire(window._types.success, res.body.message, 'success');
-      // Reset the form
-      $form.get(0).reset();
       // Reload page
       if (_.isBoolean(res.body.reloadPage) && res.body.reloadPage)
         window.location.reload();
+      // Reset the form
+      else if (_.isBoolean(res.body.resetForm) && res.body.resetForm)
+        $form.get(0).reset();
     } else {
       // Hide the spinner
       spinner.hide();
@@ -214,8 +218,6 @@ const ajaxForm = async ev => {
         JSON.stringify(res.body, null, 2),
         'success'
       );
-      // Reset the form
-      $form.get(0).reset();
     }
   } catch (err) {
     // Hide the spinner
