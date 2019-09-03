@@ -201,14 +201,18 @@ const ajaxForm = async ev => {
     } else if (isSANB(res.body.message)) {
       // Hide the spinner
       spinner.hide();
-      // Show message
-      Swal.fire(window._types.success, res.body.message, 'success');
-      // Reload page
-      if (_.isBoolean(res.body.reloadPage) && res.body.reloadPage)
-        window.location.reload();
       // Reset the form
-      else if (_.isBoolean(res.body.resetForm) && res.body.resetForm)
+      if (_.isBoolean(res.body.resetForm) && res.body.resetForm)
         $form.get(0).reset();
+      // Reload page
+      if (_.isBoolean(res.body.reloadPage) && res.body.reloadPage) {
+        // Show message
+        await Swal.fire(window._types.success, res.body.message, 'success');
+        window.location.reload();
+      } else {
+        // Show message
+        Swal.fire(window._types.success, res.body.message, 'success');
+      }
     } else {
       // Hide the spinner
       spinner.hide();
