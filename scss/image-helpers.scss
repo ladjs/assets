@@ -4,9 +4,3 @@
 img:not([src]) {
   visibility: hidden;
 }
-
-// used in emails for rendering font-awesome icons
-img.fa-img {
-  display: inline-block !important;
-  vertical-align: top !important;
-}
