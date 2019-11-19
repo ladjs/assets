@@ -22,7 +22,7 @@
     "lodash": "^4.17.15",
     "qs": "^6.9.1",
     "spinkit": "1.x",
-    "sweetalert2": "^9.1.5",
+    "sweetalert2": "8.x",
     "url-parse": "^1.4.7"
   },
   "devDependencies": {
