@@ -4,19 +4,3 @@
 .close {
   cursor: pointer;
 }
-
-// since .dropdown-menu-right is not responsive
-// we need to make sure that the language dropdown
-// is right aligned on < md screen sizes
-// <https://github.com/twbs/bootstrap/issues/25019>
-// <https://github.com/twbs/bootstrap/blob/34d745540d690086cdfc4ce648963f9acdc56bdb/scss/_navbar.scss#L160-L163>
-#navbar-dropdown-language-ul {
-  right: 0;
-  left: auto; // Reset the default from `.dropdown-menu`
-}
-@include media-breakpoint-up(md) {
-  #navbar-dropdown-language-ul {
-    left: 0;
-    right: auto; // Reset the default from `.dropdown-menu`
-  }
-}
