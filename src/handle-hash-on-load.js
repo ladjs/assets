@@ -7,7 +7,7 @@ module.exports = () => {
     const $hash = $(window.location.hash);
     if ($hash.length === 0) return;
     $hash.removeAttr('id');
-    $(window).load(() => {
+    $(window).on('load', () => {
       $hash.attr('id', hash.slice(1));
       setTimeout(() => {
         jumpTo(hash);
