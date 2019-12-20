@@ -1,25 +1,36 @@
 const isSANB = require('is-string-and-not-blank');
 
-const jumpTo = target => {
-  if (!isSANB(target) || target === '#') return;
+const jumpTo = (target, ev) => {
+  if (!isSANB(target) || target === '#') {
+    // if it does not have an data-target attribute then assume it's scroll top
+    if (ev && ev.currentTarget) {
+      const $currentTarget = $(ev.currentTarget);
+      if (!$currentTarget.get(0).hasAttribute('data-target'))
+        window.scrollTo(0, 0);
+    }
+
+    return;
+  }
 
   const $target = $(target);
   if ($target.length === 0) return;
 
   // Remove id and then add it back to prevent scroll
   // <https://stackoverflow.com/a/1489802>
+  //
+  // Otherwise we could use scrollRestoration History API approach
+  // <https://stackoverflow.com/a/58944651>
+  // <https://caniuse.com/#feat=mdn-api_history_scrollrestoration>
+  //
   const id = $target.attr('id');
   $target.removeAttr('id');
   window.history.replaceState(undefined, undefined, `#${id}`);
   $target.attr('id', id);
 
   let offsetTop = $target.offset().top;
-  offsetTop -= Number($target.css('marginTop'));
-  offsetTop -= Number($target.css('paddingTop'));
 
-  if ($('.navbar.fixed-top').length > 0) {
+  if ($('.navbar.fixed-top').length > 0)
     offsetTop -= $('.navbar.fixed-top').outerHeight();
-  }
 
   window.scrollTo(0, offsetTop);
 };

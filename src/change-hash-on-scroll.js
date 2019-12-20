@@ -14,7 +14,7 @@ const changeHashOnScroll = () => {
     $navbarFixedTop.length === 0 ? 0 : $navbarFixedTop.outerHeight();
   const $target = window.location.hash === '' ? null : $(window.location.hash);
 
-  $(':header[id]')
+  $('[id]:visible:not(:input, a, button, .navbar-collapse)')
     .not($target)
     .each(function() {
       const beginsBeforeTop =
