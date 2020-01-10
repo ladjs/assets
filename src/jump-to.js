@@ -32,6 +32,9 @@ const jumpTo = (target, ev) => {
   if ($('.navbar.fixed-top').length > 0)
     offsetTop -= $('.navbar.fixed-top').outerHeight();
 
+  // add 20px padding to top
+  if ($target.prop('tagName') === 'A') offsetTop -= 20;
+
   window.scrollTo(0, offsetTop);
 };
 
