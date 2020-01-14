@@ -226,8 +226,12 @@ const ajaxForm = async ev => {
       );
     }
 
-    if (_.isBoolean(res.body.hideModal) && res.body.hideModal)
+    if (_.isBoolean(res.body.hideModal) && res.body.hideModal) {
+      // bootstrap 3
       $form.parents('.modal.in:first').modal('hide');
+      // bootstrap 4
+      $form.parents('.modal.show:first').modal('hide');
+    }
   } catch (err) {
     // Hide the spinner
     spinner.hide();
