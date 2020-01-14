@@ -225,6 +225,9 @@ const ajaxForm = async ev => {
         'success'
       );
     }
+
+    if (_.isBoolean(res.body.hideModal) && res.body.hideModal)
+      $form.parents('.modal.in:first').modal('hide');
   } catch (err) {
     // Hide the spinner
     spinner.hide();
