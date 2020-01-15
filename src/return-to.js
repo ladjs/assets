@@ -1,6 +1,8 @@
 const URLParse = require('url-parse');
 const qs = require('qs');
 
+const jumpTo = require('./jump-to');
+
 //
 // Since we support links containing `?return_to=/some/path`
 //
@@ -26,15 +28,18 @@ module.exports = () => {
     qs.parse(query, { ignoreQueryPrefix: true })
   );
 
+  let hash;
+
   if (url.query.hash) {
-    url.set('hash', `#${url.query.hash}`);
+    hash = `#${url.query.hash}`;
+    url.set('hash', hash);
     delete url.query.hash;
   }
 
-  history.replaceState(
-    null,
-    url.toString(query =>
-      qs.stringify(query, { addQueryPrefix: true, format: 'RFC1738' })
-    )
+  const str = url.toString(query =>
+    qs.stringify(query, { addQueryPrefix: true, format: 'RFC1738' })
   );
+
+  history.replaceState(undefined, undefined, str);
+  if (hash) jumpTo(hash);
 };
