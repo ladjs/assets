@@ -1,8 +1,8 @@
-const qs = require('qs');
-const _ = require('lodash');
-const Frisbee = require('frisbee');
 const Swal = require('sweetalert2');
+const _ = require('lodash');
 const isSANB = require('is-string-and-not-blank');
+const qs = require('qs');
+const superagent = require('superagent');
 
 const Spinner = require('./spinner');
 
@@ -29,16 +29,10 @@ const ajaxForm = async ev => {
   // Initialize spinner
   const spinner = new Spinner($);
 
-  // Create a new instance of Frisbee
-  const defaultHeaders = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    'X-CSRF-Token': window._csrf
-  };
-  const api = new Frisbee({
-    baseURI: window.location.origin,
-    headers: defaultHeaders
-  });
+  // const api = new Frisbee({
+  //   baseURI: window.location.origin,
+  //   headers: defaultHeaders
+  // });
 
   // TODO: use stripe-checkout lib
   // If the form requires Stripe checkout token
@@ -110,8 +104,14 @@ const ajaxForm = async ev => {
   if (method === 'DELETE') method = 'DEL';
 
   try {
-    // Set default headers
-    const headers = { ...defaultHeaders };
+    const headers = {
+      'X-CSRF-Token': window._csrf,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      Expires: '-1',
+      'Cache-Control': 'no-cache,no-store,must-revalidate,max-age=-1,private'
+    };
 
     // If the form contains a file input, then we need to use FormData
     // otherwise we can just use querystring parsing to assemble body
@@ -126,6 +126,7 @@ const ajaxForm = async ev => {
       // remove content-type header so boundary is added for multipart forms
       // http://stackoverflow.com/a/35799817
       headers['Content-Type'] = undefined;
+      delete headers['Content-Type'];
     } else {
       body = qs.parse($form.serialize());
       // delete _csrf and _method from the body
@@ -134,16 +135,34 @@ const ajaxForm = async ev => {
       delete body._method;
     }
 
-    const opts = {
-      headers,
-      body,
-      // Add cookie support for CSRF/sessions
-      credentials: 'same-origin',
-      cache: 'no-cache'
-    };
-
     // Send the request
-    const res = await api[method.toLowerCase()](action, opts);
+    const res = await superagent[method.toLowerCase()](action)
+      .set(headers)
+      .ok(() => true) // override so we can parse it ourselves
+      .send(body);
+
+    // taken from Frisbee
+    // attempt to use better and human-friendly error messages
+    if (!res.ok) {
+      res.err = new Error(
+        res.statusText || res.text || 'Unsuccessful HTTP response'
+      );
+      if (
+        typeof res.body === 'object' &&
+        typeof res.body.message === 'string'
+      ) {
+        res.err = new Error(res.body.message);
+      } else if (
+        !Array.isArray(res.body) &&
+        // attempt to utilize Stripe-inspired error messages
+        typeof res.body.error === 'object'
+      ) {
+        if (res.body.error.message) res.err = new Error(res.body.error.message);
+        if (res.body.error.stack) res.err.stack = res.body.error.stack;
+        if (res.body.error.code) res.err.code = res.body.error.code;
+        if (res.body.error.param) res.err.param = res.body.error.param;
+      }
+    }
 
     // Check if any errors occurred
     if (res.err) throw res.err;
