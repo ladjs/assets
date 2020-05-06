@@ -198,7 +198,7 @@ const ajaxForm = async ev => {
             title: isSANB(res.body.title)
               ? res.body.title
               : window._types.success,
-            type: 'success',
+            type: isSANB(res.body.type) ? res.body.type : 'success',
             html: res.body.message
           };
         // Show message
