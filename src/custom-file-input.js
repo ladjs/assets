@@ -1,10 +1,8 @@
-const _ = require('lodash');
-
 // <label class="d-block">
 //   <input required="required" data-toggle="custom-file" data-target="#company-logo" type="file" name="company_logo" accept="image/*" class="custom-file-input">
 //   <span id="company-logo" class="custom-file-control custom-file-name" data-btn="{{ t('Select File') }}" data-content="{{ t('Upload company logo...') }}"></span>
 // </label>
-const customFileInput = function() {
+const customFileInput = function () {
   const $input = $(this);
   const target = $input.data('target');
   const $target = $(target);
@@ -27,15 +25,14 @@ const customFileInput = function() {
   const input = $input.get(0);
 
   let name =
-    _.isObject(input) &&
-    _.isObject(input.files) &&
-    _.isObject(input.files[0]) &&
-    _.isString(input.files[0].name)
+    typeof input === 'object' &&
+    Array.isArray(input.files) &&
+    typeof input.files[0] === 'object' &&
+    typeof input.files[0].name === 'string'
       ? input.files[0].name
       : $input.val();
 
-  if (_.isNull(name) || name === '')
-    name = $target.attr('data-original-content');
+  if (!name) name = $target.attr('data-original-content');
 
   $target.attr('data-content', name);
 };

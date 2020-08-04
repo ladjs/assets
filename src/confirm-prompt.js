@@ -5,20 +5,20 @@ const isSANB = require('is-string-and-not-blank');
 // `data-toggle="confirm-prompt"` or `.confirm-prompt` class
 // `data-html="Please confirm if you wish to continue"` html/text of message
 // `data-title="Are you sure?"` title of swal message
-const confirmPrompt = async ev => {
+const confirmPrompt = async (ev) => {
   // Get the form or button
-  const $el = $(ev.currentTarget);
+  const $element = $(ev.currentTarget);
 
-  let title = $el.data('confirm-prompt-title');
+  let title = $element.data('confirm-prompt-title');
   if (!isSANB(title)) title = window._confirmPromptTitle || 'Are you sure?';
 
-  let html = $el.data('confirm-prompt-html');
+  let html = $element.data('confirm-prompt-html');
   if (!isSANB(html))
     html =
       window._confirmPromptHTML || 'Please confirm if you wish to continue.';
 
   // Check if we've already confirmed it
-  const confirmed = $el.data('confirmed');
+  const confirmed = $element.data('confirmed');
   if (!confirmed) {
     ev.preventDefault();
     const result = await Swal.fire({
@@ -29,11 +29,11 @@ const confirmPrompt = async ev => {
     });
     if (!result.value) return;
     // Set confirmed state to true
-    $el.data('confirmed', true);
+    $element.data('confirmed', true);
     // Trigger click again
-    $el.trigger(ev.type);
+    $element.trigger(ev.type);
     // Reset confirmation after click
-    $el.data('confirmed', false);
+    $element.data('confirmed', false);
   }
 };
 

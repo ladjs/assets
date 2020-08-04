@@ -1,6 +1,5 @@
 const clipboard = require('./clipboard');
 const returnTo = require('./return-to');
-const facebookHashFix = require('./facebook-hash-fix');
 const changeHashOnScroll = require('./change-hash-on-scroll');
 const customFileInput = require('./custom-file-input');
 const confirmPrompt = require('./confirm-prompt');
@@ -16,7 +15,6 @@ const handleHashChange = require('./handle-hash-change');
 module.exports = {
   clipboard,
   returnTo,
-  facebookHashFix,
   changeHashOnScroll,
   customFileInput,
   confirmPrompt,

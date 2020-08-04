@@ -1,4 +1,1 @@
-# browsers that we support
-# <https://github.com/ai/browserslist>
-last 2 versions
-ie >= 10
+extends @ladjs/browserslist-config

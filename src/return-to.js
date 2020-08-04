@@ -24,7 +24,7 @@ const jumpTo = require('./jump-to');
 // <https://nodejs.org/api/url.html#url_url_format_urlobject>
 //
 module.exports = () => {
-  const url = new URLParse(window.location.href, query =>
+  const url = new URLParse(window.location.href, (query) =>
     qs.parse(query, { ignoreQueryPrefix: true })
   );
 
@@ -36,10 +36,10 @@ module.exports = () => {
     delete url.query.hash;
   }
 
-  const str = url.toString(query =>
+  const string = url.toString((query) =>
     qs.stringify(query, { addQueryPrefix: true, format: 'RFC1738' })
   );
 
-  history.replaceState(undefined, undefined, str);
+  history.replaceState(undefined, undefined, string);
   if (hash) jumpTo(hash);
 };

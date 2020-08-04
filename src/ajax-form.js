@@ -1,5 +1,4 @@
 const Swal = require('sweetalert2');
-const _ = require('lodash');
 const isSANB = require('is-string-and-not-blank');
 const qs = require('qs');
 const superagent = require('superagent');
@@ -10,7 +9,7 @@ const Spinner = require('./spinner');
 // and sweetalert2 message response
 // and built-in support for Stripe Checkout
 // eslint-disable-next-line complexity
-const ajaxForm = async ev => {
+const ajaxForm = async (ev) => {
   // Prevent default form submission
   ev.preventDefault();
 
@@ -38,7 +37,8 @@ const ajaxForm = async ev => {
   // If the form requires Stripe checkout token
   // then return early and open Stripe checkout
   if ($form.hasClass('stripe-checkout')) {
-    if (!window.StripeCheckout) return console.error('Stripe checkout missing');
+    if (!window.StripeCheckout)
+      throw new Error('StripeCheckout global missing');
 
     // Lookup email input for later
     const $email = $form.find('input[name="stripe_email"]');
@@ -46,7 +46,7 @@ const ajaxForm = async ev => {
     // If there is already a token then continue
     const $token = $form.find('input[name="stripe_token"]');
 
-    if ($token.length === 0) return console.error('Missing Stripe token field');
+    if ($token.length === 0) throw new Error('Stripe token field missing');
 
     if ($token.val() === '') {
       // Fetch token for the user
@@ -54,7 +54,7 @@ const ajaxForm = async ev => {
         key: window.STRIPE_PUBLISHABLE_KEY,
         image: window.STRIPE_CHECKOUT_IMAGE_URL,
         locale: window.LOCALE || 'auto',
-        token: token => {
+        token: (token) => {
           // You can access the token ID with `token.id`.
           // get the token ID to your server-side code for use
           $token.val(token.id);
@@ -133,40 +133,43 @@ const ajaxForm = async ev => {
     }
 
     // Send the request
-    const res = await superagent[method.toLowerCase()](action)
+    const response = await superagent[method.toLowerCase()](action)
       .set(headers)
       .ok(() => true) // override so we can parse it ourselves
       .send(body);
 
     // taken from Frisbee
     // attempt to use better and human-friendly error messages
-    if (!res.ok) {
-      res.err = new Error(
-        res.statusText || res.text || 'Unsuccessful HTTP response'
+    if (!response.ok) {
+      response.err = new Error(
+        response.statusText || response.text || 'Unsuccessful HTTP response'
       );
       if (
-        typeof res.body === 'object' &&
-        typeof res.body.message === 'string'
+        typeof response.body === 'object' &&
+        typeof response.body.message === 'string'
       ) {
-        res.err = new Error(res.body.message);
+        response.err = new Error(response.body.message);
       } else if (
-        !Array.isArray(res.body) &&
+        !Array.isArray(response.body) &&
         // attempt to utilize Stripe-inspired error messages
-        typeof res.body.error === 'object'
+        typeof response.body.error === 'object'
       ) {
-        if (res.body.error.message) res.err = new Error(res.body.error.message);
-        if (res.body.error.stack) res.err.stack = res.body.error.stack;
-        if (res.body.error.code) res.err.code = res.body.error.code;
-        if (res.body.error.param) res.err.param = res.body.error.param;
+        if (response.body.error.message)
+          response.err = new Error(response.body.error.message);
+        if (response.body.error.stack)
+          response.err.stack = response.body.error.stack;
+        if (response.body.error.code)
+          response.err.code = response.body.error.code;
+        if (response.body.error.param)
+          response.err.param = response.body.error.param;
       }
     }
 
     // Check if any errors occurred
-    if (res.err) throw res.err;
+    if (response.err) throw response.err;
 
     // Either display a success message, redirect user, or reload page
-    if (!_.isObject(res.body)) {
-      console.error('Response was not an object', res);
+    if (typeof response.body !== 'object') {
       // Hide the spinner
       spinner.hide();
       // Show message
@@ -175,61 +178,85 @@ const ajaxForm = async ev => {
         'Invalid response, please try again',
         'error'
       );
-    } else if (isSANB(res.body.redirectTo)) {
+    } else if (isSANB(response.body.redirectTo)) {
       if (
-        (_.isBoolean(res.body.autoRedirect) && res.body.autoRedirect) ||
-        (!isSANB(res.body.message) && !_.isObject(res.body.swal))
+        (typeof response.body.autoRedirect === 'boolean' &&
+          response.body.autoRedirect) ||
+        (!isSANB(response.body.message) &&
+          typeof response.body.swal !== 'object')
       ) {
         // Reset the form
-        if (_.isBoolean(res.body.resetForm) && res.body.resetForm)
+        if (
+          typeof response.body.resetForm === 'boolean' &&
+          response.body.resetForm
+        )
           $form.get(0).reset();
         // Redirect
-        window.location = res.body.redirectTo;
+        window.location = response.body.redirectTo;
       } else {
         // Hide the spinner
         spinner.hide();
         // Reset the form
-        if (_.isBoolean(res.body.resetForm) && res.body.resetForm)
+        if (
+          typeof response.body.resetForm === 'boolean' &&
+          response.body.resetForm
+        )
           $form.get(0).reset();
         let config = {};
-        if (_.isObject(res.body.swal)) config = res.body.swal;
+        if (typeof response.body.swal === 'object') config = response.body.swal;
         else
           config = {
-            title: isSANB(res.body.title)
-              ? res.body.title
+            title: isSANB(response.body.title)
+              ? response.body.title
               : window._types.success,
-            type: isSANB(res.body.type) ? res.body.type : 'success',
-            html: res.body.message
+            type: isSANB(response.body.type) ? response.body.type : 'success',
+            html: response.body.message
           };
         // Show message
         await Swal.fire(config);
         // Redirect
-        window.location = res.body.redirectTo;
+        window.location = response.body.redirectTo;
       }
-    } else if (_.isObject(res.body.swal)) {
+    } else if (typeof response.body.swal === 'object') {
       // Hide the spinner
       spinner.hide();
       // Show message
-      Swal.fire(res.body.swal);
+      Swal.fire(response.body.swal);
       // Reset the form
-      if (_.isBoolean(res.body.resetForm) && res.body.resetForm)
+      if (
+        typeof response.body.resetForm === 'boolean' &&
+        response.body.resetForm
+      )
         $form.get(0).reset();
-    } else if (isSANB(res.body.message)) {
+    } else if (isSANB(response.body.message)) {
       // Hide the spinner
       spinner.hide();
       // Reset the form
-      if (_.isBoolean(res.body.resetForm) && res.body.resetForm)
+      if (
+        typeof response.body.resetForm === 'boolean' &&
+        response.body.resetForm
+      )
         $form.get(0).reset();
       // Reload page
-      if (_.isBoolean(res.body.reloadPage) && res.body.reloadPage) {
+      if (
+        typeof response.body.reloadPage === 'boolean' &&
+        response.body.reloadPage
+      ) {
         // Show message
-        await Swal.fire(window._types.success, res.body.message, 'success');
+        await Swal.fire(
+          window._types.success,
+          response.body.message,
+          'success'
+        );
         window.location.reload();
       } else {
         // Show message
-        Swal.fire(window._types.success, res.body.message, 'success');
+        Swal.fire(window._types.success, response.body.message, 'success');
       }
-    } else if (_.isBoolean(res.body.reloadPage) && res.body.reloadPage) {
+    } else if (
+      typeof response.body.reloadPage === 'boolean' &&
+      response.body.reloadPage
+    ) {
       window.location.reload();
     } else {
       // Hide the spinner
@@ -237,12 +264,15 @@ const ajaxForm = async ev => {
       // Show message
       Swal.fire(
         window._types.success,
-        JSON.stringify(res.body, null, 2),
+        JSON.stringify(response.body, null, 2),
         'success'
       );
     }
 
-    if (_.isBoolean(res.body.hideModal) && res.body.hideModal) {
+    if (
+      typeof response.body.hideModal === 'boolean' &&
+      response.body.hideModal
+    ) {
       // bootstrap 3
       $form.parents('.modal.in:first').modal('hide');
       // bootstrap 4

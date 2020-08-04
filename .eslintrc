@@ -3,16 +3,6 @@
   "env": { "browser": true", "jquery": true },
   "plugins": ["compat"],
   "rules": {
-    "compat/compat": "error",
-    "require-atomic-updates": "off",
-    "no-unused-vars": "off"
-  },
-  "settings": {
-    "polyfills": [
-      "Object.getOwnPropertySymbols",
-      "Object.getOwnPropertyDescriptors",
-      "Promise.resolve",
-      "Promise"
-    ]
+    "compat/compat": "error"
   }
 }

@@ -16,7 +16,7 @@ const changeHashOnScroll = () => {
 
   $('[id]:visible:not(:input, button, .navbar-collapse)')
     .not($target)
-    .each(function() {
+    .each(function () {
       const beginsBeforeTop =
         $(this).offset().top < window.pageYOffset + extraHeight;
       const endsInVisibleArea =
@@ -26,6 +26,8 @@ const changeHashOnScroll = () => {
       // Remove id and then add it back to prevent scroll
       // <https://stackoverflow.com/a/1489802>
       const id = $(this).attr('id');
+      // Exclude Svgjs
+      if (id.startsWith('Svgjs')) return;
       $(this).removeAttr('id');
       window.history.replaceState(undefined, undefined, `#${id}`);
       $(this).attr('id', id);
