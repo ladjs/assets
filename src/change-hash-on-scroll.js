@@ -26,8 +26,8 @@ const changeHashOnScroll = () => {
       // Remove id and then add it back to prevent scroll
       // <https://stackoverflow.com/a/1489802>
       const id = $(this).attr('id');
-      // Exclude Svgjs
-      if (id.startsWith('Svgjs')) return;
+      // Exclude Svgjs and apexcharts
+      if (id.startsWith('Svgjs') || id.startsWith('apexcharts')) return;
       $(this).removeAttr('id');
       window.history.replaceState(undefined, undefined, `#${id}`);
       $(this).attr('id', id);
