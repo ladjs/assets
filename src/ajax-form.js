@@ -132,6 +132,7 @@ const ajaxForm = async (ev) => {
       delete body._method;
     }
 
+    // TODO: this does not support retries/timeout yet
     // Send the request
     const response = await superagent[method.toLowerCase()](action)
       .set(headers)
