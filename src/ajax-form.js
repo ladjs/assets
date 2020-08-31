@@ -256,6 +256,14 @@ const ajaxForm = async (ev) => {
           'success'
         );
         window.location.reload();
+      } else if (
+        typeof response.body.renderModalBodyWithHTML === 'boolean' &&
+        response.body.renderModalBodyWithHTML
+      ) {
+        $form
+          .parents('.modal.show:first')
+          .find('.modal-body')
+          .html(response.body.message);
       } else {
         // Show message
         Swal.fire(window._types.success, response.body.message, 'success');
