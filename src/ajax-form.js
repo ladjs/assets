@@ -61,7 +61,7 @@ const ajaxForm = async (ev) => {
           // Also included is `token.email`
           // which we append to the form if
           // there is an `input[name=email]`
-          if ($email.length !== 0) $email.val(token.email);
+          if ($email.length > 0) $email.val(token.email);
           ajaxForm.call(this, ev);
         }
       });
@@ -152,6 +152,7 @@ const ajaxForm = async (ev) => {
         response.err = new Error(response.body.message);
       } else if (
         !Array.isArray(response.body) &&
+        typeof response.body === 'object' &&
         // attempt to utilize Stripe-inspired error messages
         typeof response.body.error === 'object'
       ) {
@@ -204,15 +205,18 @@ const ajaxForm = async (ev) => {
         )
           $form.get(0).reset();
         let config = {};
-        if (typeof response.body.swal === 'object') config = response.body.swal;
-        else
-          config = {
-            title: isSANB(response.body.title)
-              ? response.body.title
-              : window._types.success,
-            type: isSANB(response.body.type) ? response.body.type : 'success',
-            html: response.body.message
-          };
+        config =
+          typeof response.body.swal === 'object'
+            ? response.body.swal
+            : {
+                title: isSANB(response.body.title)
+                  ? response.body.title
+                  : window._types.success,
+                type: isSANB(response.body.type)
+                  ? response.body.type
+                  : 'success',
+                html: response.body.message
+              };
         // Show message
         await Swal.fire(config);
         // Redirect
@@ -265,12 +269,16 @@ const ajaxForm = async (ev) => {
       // Show message
       Swal.fire(
         window._types.success,
-        JSON.stringify(response.body, null, 2),
+        typeof response.body !== 'object' ||
+          JSON.stringify(response.body) === '{}'
+          ? response.text
+          : JSON.stringify(response.body, null, 2),
         'success'
       );
     }
 
     if (
+      typeof response.body === 'object' &&
       typeof response.body.hideModal === 'boolean' &&
       response.body.hideModal
     ) {

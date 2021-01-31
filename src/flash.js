@@ -23,14 +23,14 @@ module.exports = () => {
                 : null
           });
         } else {
-          const err = new Error(`Unknown message type of "${message}".`);
+          const error = new Error(`Unknown message type of "${message}".`);
           // eslint-disable-next-line max-depth
           if (
             typeof window.cabin === 'object' &&
             typeof window.cabin.error === 'function'
           )
-            window.cabin.error(err);
-          else console.error(err);
+            window.cabin.error(error);
+          else console.error(error);
         }
       }
     }
