@@ -147,12 +147,14 @@ const ajaxForm = async (ev) => {
       );
       if (
         typeof response.body === 'object' &&
+        response.body !== null &&
         typeof response.body.message === 'string'
       ) {
         response.err = new Error(response.body.message);
       } else if (
         !Array.isArray(response.body) &&
         typeof response.body === 'object' &&
+        response.body !== null &&
         // attempt to utilize Stripe-inspired error messages
         typeof response.body.error === 'object'
       ) {
@@ -171,7 +173,7 @@ const ajaxForm = async (ev) => {
     if (response.err) throw response.err;
 
     // Either display a success message, redirect user, or reload page
-    if (typeof response.body !== 'object') {
+    if (typeof response.body !== 'object' || response.body === null) {
       // Hide the spinner
       spinner.hide();
       // Show message
@@ -279,6 +281,7 @@ const ajaxForm = async (ev) => {
 
     if (
       typeof response.body === 'object' &&
+      response.body !== null &&
       typeof response.body.hideModal === 'boolean' &&
       response.body.hideModal
     ) {
