@@ -174,9 +174,9 @@ const ajaxForm = async (ev) => {
 
     // Reload table
     if ($form.hasClass('table-ajax-form')) {
-      const tableId = $form.data('table-id');
+      const tableSelector = $form.data('table');
 
-      const $table = $(`#${tableId}`);
+      const $table = $(tableSelector);
 
       $table.html(response.body.table);
 
