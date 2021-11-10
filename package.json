@@ -127,6 +127,9 @@
       "node",
       "browser",
       "jquery"
-    ]
+    ],
+    "rules": {
+      "unicorn/catch-error-name": "off"
+    }
   }
 }
