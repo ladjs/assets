@@ -1,4 +1,5 @@
 const Swal = require('sweetalert2');
+const URL = require('url-parse');
 const isSANB = require('is-string-and-not-blank');
 const qs = require('qs');
 const superagent = require('superagent');
@@ -130,6 +131,43 @@ const ajaxForm = async (ev) => {
       // since they are defined in headers and http method
       delete body._csrf;
       delete body._method;
+    }
+
+    // Update the querystring for ajax tables
+    if ($form.hasClass('table-ajax-form')) {
+      const url = new URL(window.location.href);
+      let sort;
+      let keyword;
+
+      if (body instanceof FormData) {
+        sort = body.get('sort');
+        keyword = body.get('keyword');
+      } else {
+        sort = body.sort;
+        keyword = body.keyword;
+      }
+
+      // Create state
+      const state = qs.parse(url.query, {
+        ignoreQueryPrefix: true
+      });
+      state.sort = isSANB(sort) ? sort : sort === '' ? undefined : state.sort;
+      state.keyword = isSANB(keyword)
+        ? keyword
+        : keyword === ''
+        ? undefined
+        : state.keyword;
+
+      url.set('query', qs.stringify(state));
+
+      window.history.pushState(
+        state,
+        `state ${window.history.length}`,
+        url.toString()
+      );
+
+      // Add the refactored querystring to action
+      action = url.toString();
     }
 
     // TODO: this does not support retries/timeout yet
