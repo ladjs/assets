@@ -86,7 +86,7 @@ const ajaxForm = async (ev) => {
   $btns.prop('disabled', true).addClass('disabled');
 
   // Determine the path we're sending the request to
-  let action = $form.attr('action');
+  let action = $form.is('a') ? $form.attr('href') : $form.attr('action');
 
   // If the action is missing a starting forward slash then append it
   if (action.indexOf('/') !== 0) action = `/${action}`;
@@ -151,6 +151,12 @@ const ajaxForm = async (ev) => {
       const state = qs.parse(url.query, {
         ignoreQueryPrefix: true
       });
+
+      const pageNumber = $form.data('page');
+
+      // Set page number to 1 if keyword has changed
+      state.page =
+        state.keyword === keyword ? (pageNumber ? pageNumber : state.page) : 1;
       state.sort = isSANB(sort) ? sort : sort === '' ? undefined : state.sort;
       state.keyword = isSANB(keyword)
         ? keyword
