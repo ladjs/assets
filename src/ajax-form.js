@@ -138,13 +138,19 @@ const ajaxForm = async (ev) => {
       const url = new URL(window.location.href);
       let sort;
       let keyword;
+      let startDate;
+      let endDate;
 
       if (body instanceof FormData) {
         sort = body.get('sort');
         keyword = body.get('keyword');
+        startDate = body.get('startDate');
+        endDate = body.get('endDate');
       } else {
         sort = body.sort;
         keyword = body.keyword;
+        startDate = body.startDate;
+        endDate = body.endDate;
       }
 
       // Create state
@@ -157,12 +163,25 @@ const ajaxForm = async (ev) => {
       // Set page number to 1 if keyword has changed
       state.page =
         state.keyword === keyword ? (pageNumber ? pageNumber : state.page) : 1;
+
       state.sort = isSANB(sort) ? sort : sort === '' ? undefined : state.sort;
       state.keyword = isSANB(keyword)
         ? keyword
         : keyword === ''
         ? undefined
         : state.keyword;
+
+      // Handle dates
+      state.startDate = isSANB(startDate)
+        ? startDate
+        : startDate === ''
+        ? undefined
+        : state.startDate;
+      state.endDate = isSANB(endDate)
+        ? endDate
+        : endDate === ''
+        ? undefined
+        : state.endDate;
 
       url.set('query', qs.stringify(state));
 
