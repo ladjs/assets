@@ -144,13 +144,13 @@ const ajaxForm = async (ev) => {
       if (body instanceof FormData) {
         sort = body.get('sort');
         keyword = body.get('keyword');
-        startDate = body.get('startDate');
-        endDate = body.get('endDate');
+        startDate = body.get('start_date');
+        endDate = body.get('end_date');
       } else {
         sort = body.sort;
         keyword = body.keyword;
-        startDate = body.startDate;
-        endDate = body.endDate;
+        startDate = body.start_date;
+        endDate = body.end_date;
       }
 
       // Create state
@@ -172,16 +172,16 @@ const ajaxForm = async (ev) => {
         : state.keyword;
 
       // Handle dates
-      state.startDate = isSANB(startDate)
+      state.start_date = isSANB(startDate)
         ? startDate
         : startDate === ''
         ? undefined
-        : state.startDate;
-      state.endDate = isSANB(endDate)
+        : state.start_date;
+      state.end_date = isSANB(endDate)
         ? endDate
         : endDate === ''
         ? undefined
-        : state.endDate;
+        : state.end_date;
 
       url.set('query', qs.stringify(state));
 
