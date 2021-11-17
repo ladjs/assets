@@ -1,4 +1,5 @@
 const Swal = require('sweetalert2');
+const URL = require('url-parse');
 const isSANB = require('is-string-and-not-blank');
 const qs = require('qs');
 const superagent = require('superagent');
@@ -28,7 +29,7 @@ const ajaxForm = async (ev) => {
   // Initialize spinner
   const spinner = new Spinner($);
 
-  // const api = new Frisbee({
+  // Const api = new Frisbee({
   //   baseURI: window.location.origin,
   //   headers: defaultHeaders
   // });
@@ -85,7 +86,7 @@ const ajaxForm = async (ev) => {
   $btns.prop('disabled', true).addClass('disabled');
 
   // Determine the path we're sending the request to
-  let action = $form.attr('action');
+  let action = $form.is('a') ? $form.attr('href') : $form.attr('action');
 
   // If the action is missing a starting forward slash then append it
   if (action.indexOf('/') !== 0) action = `/${action}`;
@@ -116,30 +117,92 @@ const ajaxForm = async (ev) => {
 
     if ($form.find('input[type="file"]').length > 0) {
       body = new FormData(this);
-      // delete _csrf and _method from the body
+      // Delete _csrf and _method from the body
       // since they are defined in headers and http method
       body.delete('_csrf');
       body.delete('_method');
-      // remove content-type header so boundary is added for multipart forms
+      // Remove content-type header so boundary is added for multipart forms
       // http://stackoverflow.com/a/35799817
       headers['Content-Type'] = undefined;
       delete headers['Content-Type'];
     } else {
       body = qs.parse($form.serialize());
-      // delete _csrf and _method from the body
+      // Delete _csrf and _method from the body
       // since they are defined in headers and http method
       delete body._csrf;
       delete body._method;
+    }
+
+    // Update the querystring for ajax tables
+    if ($form.hasClass('table-ajax-form')) {
+      const url = new URL(window.location.href);
+      let sort;
+      let keyword;
+      let startDate;
+      let endDate;
+
+      if (body instanceof FormData) {
+        sort = body.get('sort');
+        keyword = body.get('keyword');
+        startDate = body.get('start_date');
+        endDate = body.get('end_date');
+      } else {
+        sort = body.sort;
+        keyword = body.keyword;
+        startDate = body.start_date;
+        endDate = body.end_date;
+      }
+
+      // Create state
+      const state = qs.parse(url.query, {
+        ignoreQueryPrefix: true
+      });
+
+      const pageNumber = $form.data('page');
+
+      // Set page number to 1 if keyword has changed
+      state.page =
+        state.keyword === keyword ? (pageNumber ? pageNumber : state.page) : 1;
+
+      state.sort = isSANB(sort) ? sort : sort === '' ? undefined : state.sort;
+      state.keyword = isSANB(keyword)
+        ? keyword
+        : keyword === ''
+        ? undefined
+        : state.keyword;
+
+      // Handle dates
+      state.start_date = isSANB(startDate)
+        ? startDate
+        : startDate === ''
+        ? undefined
+        : state.start_date;
+      state.end_date = isSANB(endDate)
+        ? endDate
+        : endDate === ''
+        ? undefined
+        : state.end_date;
+
+      url.set('query', qs.stringify(state));
+
+      window.history.pushState(
+        state,
+        `state ${window.history.length}`,
+        url.toString()
+      );
+
+      // Add the refactored querystring to action
+      action = url.toString();
     }
 
     // TODO: this does not support retries/timeout yet
     // Send the request
     const response = await superagent[method.toLowerCase()](action)
       .set(headers)
-      .ok(() => true) // override so we can parse it ourselves
+      .ok(() => true) // Override so we can parse it ourselves
       .send(body);
 
-    // taken from Frisbee
+    // Taken from Frisbee
     // attempt to use better and human-friendly error messages
     if (!response.ok) {
       response.err = new Error(
@@ -155,7 +218,7 @@ const ajaxForm = async (ev) => {
         !Array.isArray(response.body) &&
         typeof response.body === 'object' &&
         response.body !== null &&
-        // attempt to utilize Stripe-inspired error messages
+        // Attempt to utilize Stripe-inspired error messages
         typeof response.body.error === 'object'
       ) {
         if (response.body.error.message)
@@ -171,6 +234,19 @@ const ajaxForm = async (ev) => {
 
     // Check if any errors occurred
     if (response.err) throw response.err;
+
+    // Reload table
+    if ($form.hasClass('table-ajax-form')) {
+      const tableSelector = $form.data('table');
+
+      const $table = $(tableSelector);
+
+      $table.html(response.body.table);
+
+      spinner.hide();
+
+      return;
+    }
 
     // Either display a success message, redirect user, or reload page
     if (typeof response.body !== 'object' || response.body === null) {
@@ -285,17 +361,17 @@ const ajaxForm = async (ev) => {
       typeof response.body.hideModal === 'boolean' &&
       response.body.hideModal
     ) {
-      // bootstrap 3
+      // Bootstrap 3
       $form.parents('.modal.in:first').modal('hide');
-      // bootstrap 4
+      // Bootstrap 4
       $form.parents('.modal.show:first').modal('hide');
     }
-  } catch (err) {
+  } catch (error) {
     // Hide the spinner
     spinner.hide();
 
     // Show error message
-    Swal.fire(window._types.error, err.message, 'error');
+    Swal.fire(window._types.error, error.message, 'error');
   } finally {
     // Re-enable form buttons
     $btns.prop('disabled', false).removeClass('disabled');
