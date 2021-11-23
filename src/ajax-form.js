@@ -136,22 +136,6 @@ const ajaxForm = async (ev) => {
     // Update the querystring for ajax tables
     if ($form.hasClass('table-ajax-form')) {
       const url = new URL(window.location.href);
-      let sort;
-      let keyword;
-      let startDate;
-      let endDate;
-
-      if (body instanceof FormData) {
-        sort = body.get('sort');
-        keyword = body.get('keyword');
-        startDate = body.get('start_date');
-        endDate = body.get('end_date');
-      } else {
-        sort = body.sort;
-        keyword = body.keyword;
-        startDate = body.start_date;
-        endDate = body.end_date;
-      }
 
       // Create state
       const state = qs.parse(url.query, {
@@ -160,28 +144,29 @@ const ajaxForm = async (ev) => {
 
       const pageNumber = $form.data('page');
 
-      // Set page number to 1 if keyword has changed
-      state.page =
-        state.keyword === keyword ? (pageNumber ? pageNumber : state.page) : 1;
+      // Data search-params should be a ',' delimited string
+      let searchParameters = $form.data('search-params');
+      searchParameters = isSANB(searchParameters)
+        ? searchParameters.split(',')
+        : [];
 
-      state.sort = isSANB(sort) ? sort : sort === '' ? undefined : state.sort;
-      state.keyword = isSANB(keyword)
-        ? keyword
-        : keyword === ''
-        ? undefined
-        : state.keyword;
+      for (const key of searchParameters) {
+        const value = body instanceof FormData ? body.get(key) : body[key];
 
-      // Handle dates
-      state.start_date = isSANB(startDate)
-        ? startDate
-        : startDate === ''
-        ? undefined
-        : state.start_date;
-      state.end_date = isSANB(endDate)
-        ? endDate
-        : endDate === ''
-        ? undefined
-        : state.end_date;
+        // Set page number to undefined if key has changed
+        state.page =
+          state[key] === value
+            ? pageNumber
+              ? pageNumber
+              : state.page
+            : undefined;
+
+        state[key] = isSANB(value)
+          ? value
+          : value === ''
+          ? undefined
+          : state[key];
+      }
 
       url.set('query', qs.stringify(state));
 
