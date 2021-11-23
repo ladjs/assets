@@ -153,9 +153,13 @@ const ajaxForm = async (ev) => {
       for (const key of searchParameters) {
         const value = body instanceof FormData ? body.get(key) : body[key];
 
-        // Set page number to 1 if key has changed
+        // Set page number to undefined if key has changed
         state.page =
-          state[key] === value ? (pageNumber ? pageNumber : state.page) : 1;
+          state[key] === value
+            ? pageNumber
+              ? pageNumber
+              : state.page
+            : undefined;
 
         state[key] = isSANB(value)
           ? value
