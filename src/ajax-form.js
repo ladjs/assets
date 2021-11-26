@@ -143,6 +143,9 @@ const ajaxForm = async (ev) => {
       });
 
       const pageNumber = $form.data('page');
+      if (pageNumber) {
+        state.page = pageNumber;
+      }
 
       // Data search-params should be a ',' delimited string
       let searchParameters = $form.data('search-params');
@@ -154,12 +157,7 @@ const ajaxForm = async (ev) => {
         const value = body instanceof FormData ? body.get(key) : body[key];
 
         // Set page number to undefined if key has changed
-        state.page =
-          state[key] === value
-            ? pageNumber
-              ? pageNumber
-              : state.page
-            : undefined;
+        state.page = state[key] === value ? state.page : undefined;
 
         state[key] = isSANB(value)
           ? value
