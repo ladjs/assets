@@ -1,29 +1,31 @@
-const clipboard = require('./clipboard');
-const returnTo = require('./return-to');
-const changeHashOnScroll = require('./change-hash-on-scroll');
-const customFileInput = require('./custom-file-input');
-const confirmPrompt = require('./confirm-prompt');
 const ajaxForm = require('./ajax-form');
-const jumpTo = require('./jump-to');
+const changeHashOnScroll = require('./change-hash-on-scroll');
+const clipboard = require('./clipboard');
+const confirmPrompt = require('./confirm-prompt');
+const customFileInput = require('./custom-file-input');
 const flash = require('./flash');
-const spinner = require('./spinner');
-const resizeNavbarPadding = require('./resize-navbar-padding');
-const modalAnchor = require('./modal-anchor');
-const handleHashOnLoad = require('./handle-hash-on-load');
+const handleFormOnPopstate = require('./handle-form-on-popstate');
 const handleHashChange = require('./handle-hash-change');
+const handleHashOnLoad = require('./handle-hash-on-load');
+const jumpTo = require('./jump-to');
+const modalAnchor = require('./modal-anchor');
+const resizeNavbarPadding = require('./resize-navbar-padding');
+const returnTo = require('./return-to');
+const spinner = require('./spinner');
 
 module.exports = {
-  clipboard,
-  returnTo,
-  changeHashOnScroll,
-  customFileInput,
-  confirmPrompt,
   ajaxForm,
-  jumpTo,
+  changeHashOnScroll,
+  clipboard,
+  confirmPrompt,
+  customFileInput,
   flash,
-  spinner,
-  resizeNavbarPadding,
-  modalAnchor,
+  handleFormOnPopstate,
+  handleHashChange,
   handleHashOnLoad,
-  handleHashChange
+  jumpTo,
+  modalAnchor,
+  resizeNavbarPadding,
+  returnTo,
+  spinner
 };
