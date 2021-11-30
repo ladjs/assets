@@ -138,7 +138,7 @@ const ajaxForm = async (ev) => {
       const url = new URL(window.location.href);
 
       // Create state
-      const state = qs.parse(url.query, {
+      let state = qs.parse(url.query, {
         ignoreQueryPrefix: true
       });
 
@@ -153,26 +153,49 @@ const ajaxForm = async (ev) => {
         ? searchParameters.split(',')
         : [];
 
+      // Determine if states are the same
+      let isSameState = Boolean(window.history.state);
+
       for (const key of searchParameters) {
         const value = body instanceof FormData ? body.get(key) : body[key];
 
         // Set page number to undefined if key has changed
-        state.page = state[key] === value ? state.page : undefined;
+        const isSame = state[key] === value;
+        state.page = isSame ? state.page : undefined;
 
         state[key] = isSANB(value)
           ? value
           : value === ''
           ? undefined
           : state[key];
+
+        if (isSameState && !isSame) isSameState = false;
       }
 
-      url.set('query', qs.stringify(state));
+      // Security check to prevent _csrf ever being added to querystring
+      if (state._csrf) delete state._csrf;
 
-      window.history.pushState(
-        state,
-        `state ${window.history.length}`,
-        url.toString()
-      );
+      state = qs.stringify(state);
+      url.set('query', state);
+
+      // Remove undefined properties
+      state = isSANB(state) ? qs.parse(state) : undefined;
+
+      if (isSameState || !state) {
+        window.history.replaceState(
+          state,
+          `state ${window.history.length}`,
+          url.toString()
+        );
+      } else {
+        window.history.pushState(
+          state,
+          `state ${window.history.length}`,
+          url.toString()
+        );
+        // Set modified
+        $form.data('modified', true);
+      }
 
       // Add the refactored querystring to action
       action = url.toString();
