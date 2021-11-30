@@ -108,7 +108,8 @@ const ajaxForm = async (ev) => {
     const headers = {
       'X-CSRF-Token': window._csrf,
       Accept: 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
     };
 
     // If the form contains a file input, then we need to use FormData
