@@ -194,8 +194,6 @@ const ajaxForm = async (ev) => {
           `state ${window.history.length}`,
           url.toString()
         );
-        // Set modified
-        $form.data('modified', true);
       }
 
       // Add the refactored querystring to action
