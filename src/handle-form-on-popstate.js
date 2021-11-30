@@ -47,7 +47,7 @@ function handleFormOnPopstate(ev) {
   });
 
   // Submit form
-  $($forms.get(0)).submit();
+  $forms.first().submit();
 
   // Fix modified forms
   for (const $f of $modifiedForms) {
