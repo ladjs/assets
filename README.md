@@ -48,7 +48,7 @@ See [Lad's usage][lad-usage] for more information.
 [MIT](LICENSE) © [Nick Baugh](http://niftylettuce.com/)
 
 
-##
+## 
 
 [npm]: https://www.npmjs.com/
 
