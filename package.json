@@ -129,7 +129,9 @@
       "jquery"
     ],
     "rules": {
-      "unicorn/catch-error-name": "off"
+      "unicorn/catch-error-name": "off",
+      "import/extensions": "warn",
+      "unicorn/prefer-module": "off"
     }
   }
 }
