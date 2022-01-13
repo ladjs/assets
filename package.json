@@ -1,7 +1,7 @@
 {
   "name": "@ladjs/assets",
   "description": "Assets for Lad",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "author": "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com/)",
   "bugs": {
     "url": "https://github.com/ladjs/assets/issues",
@@ -80,22 +80,6 @@
     "scroll"
   ],
   "license": "MIT",
-  "lint-staged": {
-    "linters": {
-      "*.js": [
-        "xo --fix",
-        "git add"
-      ],
-      "*.md": [
-        "remark . -qfo",
-        "git add"
-      ],
-      "package.json": [
-        "fixpack",
-        "git add"
-      ]
-    }
-  },
   "main": "lib/index.js",
   "prettier": {
     "singleQuote": true,
