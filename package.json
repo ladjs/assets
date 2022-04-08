@@ -20,7 +20,7 @@
     "is-string-and-not-blank": "^0.0.2",
     "qs": "^6.10.3",
     "spinkit": "1.x",
-    "superagent": "^7.0.2",
+    "superagent": "^7.1.1",
     "sweetalert2": "8.x",
     "url-parse": "^1.5.4"
   },
