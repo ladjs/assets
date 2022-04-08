@@ -22,7 +22,7 @@
     "spinkit": "1.x",
     "superagent": "^7.0.2",
     "sweetalert2": "8.x",
-    "url-parse": "^1.5.4"
+    "url-parse": "^1.5.10"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",
