@@ -2,12 +2,14 @@
 *.log
 .idea
 node_modules
-lib
-
+coverage
+.nyc_output
+locales/
+package-lock.json
+yarn.lock
 
 Thumbs.db
 tmp/
 temp/
-coverage
 *.lcov
-.nyc_output
+lib

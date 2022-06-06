@@ -5,7 +5,7 @@ const jumpTo = (target, ev) => {
     // if it does not have an data-target attribute then assume it's scroll top
     if (ev && ev.currentTarget) {
       const $currentTarget = $(ev.currentTarget);
-      if (!$currentTarget.get(0).hasAttribute('data-target'))
+      if (!Object.hasOwn($currentTarget.get(0).dataset, 'target'))
         window.scrollTo(0, 0);
     }
 

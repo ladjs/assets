@@ -1,4 +1,4 @@
-const jumpTo = require('./jump-to');
+const jumpTo = require('./jump-to.js');
 
 // if (window.location.hash !== '') jumpTo($, window.location.hash);
 module.exports = () => {

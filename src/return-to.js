@@ -1,7 +1,7 @@
 const URLParse = require('url-parse');
 const qs = require('qs');
 
-const jumpTo = require('./jump-to');
+const jumpTo = require('./jump-to.js');
 
 //
 // Since we support links containing `?return_to=/some/path`

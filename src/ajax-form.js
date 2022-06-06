@@ -4,7 +4,7 @@ const isSANB = require('is-string-and-not-blank');
 const qs = require('qs');
 const superagent = require('superagent');
 
-const Spinner = require('./spinner');
+const Spinner = require('./spinner.js');
 
 // Ajax form submission with frisbee
 // and sweetalert2 message response
@@ -379,12 +379,12 @@ const ajaxForm = async (ev) => {
       // Bootstrap 4
       $form.parents('.modal.show:first').modal('hide');
     }
-  } catch (error) {
+  } catch (err) {
     // Hide the spinner
     spinner.hide();
 
     // Show error message
-    Swal.fire(window._types.error, error.message, 'error');
+    Swal.fire(window._types.error, err.message, 'error');
   } finally {
     // Re-enable form buttons
     $btns.prop('disabled', false).removeClass('disabled');

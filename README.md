@@ -24,12 +24,6 @@
 npm install @ladjs/assets
 ```
 
-[yarn][]:
-
-```sh
-yarn add @ladjs/assets
-```
-
 
 ## Usage
 
@@ -51,7 +45,5 @@ See [Lad's usage][lad-usage] for more information.
 ##
 
 [npm]: https://www.npmjs.com/
-
-[yarn]: https://yarnpkg.com/
 
 [lad-usage]: https://github.com/ladjs/lad/blob/master/template/assets/js/core.js

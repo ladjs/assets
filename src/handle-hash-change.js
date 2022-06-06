@@ -1,4 +1,4 @@
-const jumpTo = require('./jump-to');
+const jumpTo = require('./jump-to.js');
 
 module.exports = (ev) => {
   ev.preventDefault();
