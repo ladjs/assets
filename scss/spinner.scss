@@ -27,9 +27,6 @@
   // <http://stackoverflow.com/a/2870024>
   background-attachment: fixed;
 
-  // spinkit
-  @import 'node_modules/spinkit/spinkit.css';
-
   // override spinkit variables just for this
   --sk-size: 60px;
   --sk-color: white;

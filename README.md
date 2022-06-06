@@ -21,7 +21,7 @@
 [npm][]:
 
 ```sh
-npm install @ladjs/assets
+npm install @ladjs/assets spinkit
 ```
 
 
