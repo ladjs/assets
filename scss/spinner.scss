@@ -27,11 +27,13 @@
   // <http://stackoverflow.com/a/2870024>
   background-attachment: fixed;
 
-  // override spinkit variables just for this
-  $spinkit-size: 60px;
-  $spinkit-spinner-margin: 100px auto;
-  $spinkit-spinner-color: white;
-
   // spinkit
-  @import 'node_modules/spinkit/scss/spinkit';
+  @import 'node_modules/spinkit/spinkit.css';
+
+  // override spinkit variables just for this
+  --sk-size: 60px;
+  --sk-color: white;
+  .sk-center {
+    margin: 100px auto;
+  }
 }
