@@ -36,6 +36,19 @@ const jumpTo = (target, ev) => {
   if ($target.prop('tagName') === 'A') offsetTop -= 20;
 
   window.scrollTo(0, offsetTop);
+
+  // if there is a scrollspy area then we need to set active state on it
+  const $a = $(`a.list-group-item-action`);
+  let match = false;
+  $a.each(function () {
+    if (match) return;
+    const $el = $(this);
+    if ($el.attr('href') === `#${id}`) {
+      match = true;
+      $el.parents('.list-group:first').find('a').removeClass('active');
+      $el.addClass('active');
+    }
+  });
 };
 
 module.exports = jumpTo;
