@@ -27,7 +27,13 @@ const changeHashOnScroll = () => {
       // <https://stackoverflow.com/a/1489802>
       const id = $(this).attr('id');
       // Exclude Svgjs and apexcharts
-      if (id.startsWith('Svgjs') || id.startsWith('apexcharts')) return;
+      if (
+        id.startsWith('Svgjs') ||
+        id.startsWith('apexcharts') ||
+        id.startsWith('lazyframe') ||
+        id.startsWith('modal-')
+      )
+        return;
       $(this).removeAttr('id');
       window.history.replaceState(undefined, undefined, `#${id}`);
       $(this).attr('id', id);
