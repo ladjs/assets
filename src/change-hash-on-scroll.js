@@ -32,7 +32,9 @@ const changeHashOnScroll = () => {
         id.startsWith('Svgjs') ||
         id.startsWith('apexcharts') ||
         id.startsWith('lazyframe') ||
-        id.startsWith('modal-')
+        id.startsWith('modal-') ||
+        id.startsWith('tooltip') ||
+        id.startsWith('collapse-')
       )
         return;
       $(this).removeAttr('id');
