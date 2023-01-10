@@ -42,7 +42,10 @@ const jumpTo = (target, ev) => {
     $target.attr('data-toggle') === 'collapse' &&
     $target.attr('data-target')
   ) {
-    $($target.attr('data-target')).collapse();
+    // hide all other collapsible sections
+    $('.collapse').collapse('hide');
+    // show the targeted one (allows double click in modal)
+    $($target.attr('data-target')).collapse('show');
   }
 
   // if there is a scrollspy area then we need to set active state on it
