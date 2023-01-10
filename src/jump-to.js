@@ -27,6 +27,16 @@ const jumpTo = (target, ev) => {
   window.history.replaceState(undefined, undefined, `#${id}`);
   $target.attr('id', id);
 
+  let offsetTop = $target.offset().top;
+
+  if ($('.navbar.fixed-top').length > 0)
+    offsetTop -= $('.navbar.fixed-top').outerHeight();
+
+  // add 20px padding to top
+  if ($target.prop('tagName') === 'A') offsetTop -= 20;
+
+  window.scrollTo(0, offsetTop);
+
   // if it had collapse then we need to expand the item
   if (
     $target.attr('data-toggle') === 'collapse' &&
@@ -37,16 +47,6 @@ const jumpTo = (target, ev) => {
     // show the targeted one (allows double click in modal)
     $($target.attr('data-target')).collapse('show');
   }
-
-  let offsetTop = $target.offset().top;
-
-  if ($('.navbar.fixed-top').length > 0)
-    offsetTop -= $('.navbar.fixed-top').outerHeight();
-
-  // add 20px padding to top
-  if ($target.prop('tagName') === 'A') offsetTop -= 20;
-
-  window.scrollTo(0, offsetTop);
 
   // if there is a scrollspy area then we need to set active state on it
   const $a = $(`a.list-group-item-action`);
