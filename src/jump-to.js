@@ -15,6 +15,11 @@ const jumpTo = (target, ev) => {
   const $target = $(target);
   if ($target.length === 0) return;
 
+  // if the target is inside a `.collapse` div without a `.show` class
+  // then we shouldn't jump to it (e.g. <h3>)
+  const $parentCollapse = $target.parents('.collapse:first');
+  if ($parentCollapse.length > 0 && !$parentCollapse.hasClass('show')) return;
+
   // Remove id and then add it back to prevent scroll
   // <https://stackoverflow.com/a/1489802>
   //
