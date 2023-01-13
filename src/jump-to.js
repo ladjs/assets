@@ -50,13 +50,7 @@ const jumpTo = (target, ev) => {
   window.scrollTo(0, offsetTop);
 
   // if it had collapse then we need to expand the item
-  if ($(`#collapse-${id}`).length > 0) {
-    //
-    // NOTE: we do not do `.collapse('show')`
-    //       since the transition would be too slow
-    //
-    $(`#collapse-${id}`).addClass('show');
-  }
+  if ($(`#collapse-${id}`).length > 0) $(`#collapse-${id}`).collapse('show');
 
   // if there is a scrollspy area then we need to set active state on it
   const $a = $(`a.list-group-item-action`);
