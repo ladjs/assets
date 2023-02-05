@@ -34,7 +34,8 @@ const changeHashOnScroll = () => {
         id.startsWith('lazyframe') ||
         id.startsWith('modal-') ||
         id.startsWith('tooltip') ||
-        id.startsWith('collapse-')
+        id.startsWith('collapse-') ||
+        id.startsWith('table-')
       )
         return;
       $(this).removeAttr('id');
