@@ -34,7 +34,6 @@ const ajaxForm = async (ev) => {
   //   headers: defaultHeaders
   // });
 
-  // TODO: use stripe-checkout lib
   // If the form requires Stripe checkout token
   // then return early and open Stripe checkout
   if ($form.hasClass('stripe-checkout')) {
@@ -200,7 +199,7 @@ const ajaxForm = async (ev) => {
       action = url.toString();
     }
 
-    // TODO: this does not support retries/timeout yet
+    // NOTE: this does not support retries/timeout yet
     // Send the request
     const response = await superagent[method.toLowerCase()](action)
       .set(headers)
@@ -239,19 +238,6 @@ const ajaxForm = async (ev) => {
 
     // Check if any errors occurred
     if (response.err) throw response.err;
-
-    // Reload table
-    if ($form.hasClass('table-ajax-form')) {
-      const tableSelector = $form.data('table');
-
-      const $table = $(tableSelector);
-
-      $table.html(response.body.table);
-
-      spinner.hide();
-
-      return;
-    }
 
     // Either display a success message, redirect user, or reload page
     if (typeof response.body !== 'object' || response.body === null) {
@@ -354,6 +340,18 @@ const ajaxForm = async (ev) => {
       response.body.reloadPage
     ) {
       window.location.reload();
+    } else if (
+      $form.hasClass('table-ajax-form') &&
+      isSANB(response.body.table)
+    ) {
+      // Reload table
+      const tableSelector = $form.data('table');
+
+      const $table = $(tableSelector);
+
+      $table.html(response.body.table);
+
+      spinner.hide();
     } else {
       // Hide the spinner
       spinner.hide();
