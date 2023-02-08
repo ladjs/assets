@@ -1,4 +1,4 @@
-const Swal = require('sweetalert2/dist/sweetalert2');
+const Swal = require('sweetalert2');
 const isSANB = require('is-string-and-not-blank');
 
 // Allow users to specify:
