@@ -1,4 +1,4 @@
-const Swal = require('sweetalert2');
+const Swal = require('sweetalert2/dist/sweetalert2');
 const URL = require('url-parse');
 const isSANB = require('is-string-and-not-blank');
 const qs = require('qs');
