@@ -29,6 +29,7 @@ const changeHashOnScroll = () => {
       // Exclude Svgjs and apexcharts
       if (
         id === 'top' ||
+        id === 'spinner' ||
         id.startsWith('Svgjs') ||
         id.startsWith('apexcharts') ||
         id.startsWith('lazyframe') ||
