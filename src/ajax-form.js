@@ -351,6 +351,9 @@ const ajaxForm = async (ev) => {
 
       $table.html(response.body.table);
 
+      // dispatch an event so we can re-render things (e.g. dayjs)
+      $form.dispatchEvent(new Event('reload'));
+
       spinner.hide();
     } else {
       // Hide the spinner
