@@ -24,8 +24,11 @@ const confirmPrompt = async (ev) => {
     const result = await Swal.fire({
       title,
       html,
-      type: 'question',
-      showCancelButton: true
+      type: $element.data('confirm-type') || 'question',
+      showCancelButton:
+        typeof $element.data('confirm-show-cancel-button') === 'boolean'
+          ? $element.data('confirm-show-cancel-button')
+          : true
     });
     if (!result.value) return;
     // Set confirmed state to true
