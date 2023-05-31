@@ -1,6 +1,5 @@
 const URLParse = require('url-parse');
 const qs = require('qs');
-
 const jumpTo = require('./jump-to.js');
 
 //

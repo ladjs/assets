@@ -13,28 +13,28 @@
   "dependencies": {
     "clipboard": "^2.0.11",
     "is-string-and-not-blank": "^0.0.2",
-    "qs": "^6.10.5",
-    "superagent": "^8.0.0",
-    "sweetalert2": "^8.19.0",
+    "qs": "^6.11.2",
+    "superagent": "^8.0.9",
+    "sweetalert2": "8.19.0",
     "url-parse": "^1.5.10"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "^7.18.5",
-    "@babel/preset-env": "^7.18.2",
-    "@commitlint/cli": "^17.0.2",
-    "@commitlint/config-conventional": "^17.0.2",
+    "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.22.1",
+    "@babel/preset-env": "^7.22.4",
+    "@commitlint/cli": "^17.6.5",
+    "@commitlint/config-conventional": "^17.6.5",
     "@ladjs/browserslist-config": "^1.0.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.18.0",
+    "eslint": "^8.41.0",
     "eslint-config-xo-lass": "^2.0.1",
     "fixpack": "^4.0.0",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.2",
-    "remark-cli": "^10.0.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "remark-cli": "^11.0.0",
     "remark-preset-github": "^4.0.4",
     "spinkit": "^2.0.1",
-    "xo": "^0.50.0"
+    "xo": "^0.54.2"
   },
   "engines": {
     "node": ">=14"

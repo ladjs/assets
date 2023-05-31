@@ -3,7 +3,6 @@ const URL = require('url-parse');
 const isSANB = require('is-string-and-not-blank');
 const qs = require('qs');
 const superagent = require('superagent');
-
 const Spinner = require('./spinner.js');
 
 // Ajax form submission with frisbee
