@@ -28,6 +28,9 @@ const changeHashOnScroll = () => {
       const id = $(this).attr('id');
       // Exclude Svgjs and apexcharts
       if (
+        !id ||
+        $(this).attr('data-ignore-hash-change') ||
+        id.trim() === '' ||
         id === 'top' ||
         id === 'spinner' ||
         id.startsWith('Svgjs') ||
