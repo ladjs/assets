@@ -37,6 +37,7 @@ const changeHashOnScroll = () => {
         id.startsWith('apexcharts') ||
         id.startsWith('lazyframe') ||
         id.startsWith('modal-') ||
+        id.startsWith('mermaid') ||
         id.startsWith('tooltip') ||
         id.startsWith('collapse-') ||
         id.startsWith('table-')
