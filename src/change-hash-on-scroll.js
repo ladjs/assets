@@ -40,6 +40,7 @@ const changeHashOnScroll = () => {
         id.startsWith('mermaid') ||
         id.startsWith('tooltip') ||
         id.startsWith('collapse-') ||
+        id.startsWith('navbar-') ||
         id.startsWith('table-')
       )
         return;
