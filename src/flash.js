@@ -12,7 +12,7 @@ module.exports = () => {
           // render any full screen alerts immediately
           // eslint-disable-next-line max-depth
           if (message.grow === 'fullscreen') {
-            Swal.fire(message);
+            steps.unshift(message);
           } else {
             steps.push(message);
           }
