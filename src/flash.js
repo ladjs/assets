@@ -43,4 +43,11 @@ module.exports = () => {
 
     if (steps.length > 0) Swal.queue(steps);
   }
+
+  // clear window._messages
+  window._messages = {};
+
+  // delete script tag that contained messages
+  // (e.g. in case we generate passwords in `_messages`)
+  $('#flash-messages').remove();
 };
