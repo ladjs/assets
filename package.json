@@ -15,7 +15,7 @@
     "is-string-and-not-blank": "^0.0.2",
     "qs": "^6.11.2",
     "superagent": "^8.0.9",
-    "sweetalert2": "8.19.0",
+    "sweetalert2": "8.19.1",
     "url-parse": "^1.5.10"
   },
   "devDependencies": {
