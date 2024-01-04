@@ -1,7 +1,7 @@
 {
   "name": "@ladjs/assets",
   "description": "Assets for Lad",
-  "version": "2.1.28",
+  "version": "2.1.29",
   "author": "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com/)",
   "bugs": {
     "url": "https://github.com/ladjs/assets/issues",
